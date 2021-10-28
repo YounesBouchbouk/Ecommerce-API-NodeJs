@@ -1,0 +1,29 @@
+{
+  "name": "ecombackend",
+  "version": "1.0.0",
+  "description": "My EcommerceBAckEnd With Node Js MongoDB ExpressJS",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js "
+  },
+  "keywords": [
+    "Ecommerce",
+    "Back-End",
+    "MERN",
+    "stack",
+    "ecommerce"
+  ],
+  "author": "Younes Bouchbouk",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.12",
+    "morgan": "^1.10.0",
+    "Router": "^2.1.0",
+    "validator": "^13.6.0"
+  }
+}
