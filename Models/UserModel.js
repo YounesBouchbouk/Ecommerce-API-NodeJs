@@ -75,6 +75,24 @@ userSchema.pre('save', function(next) {
   });
 
 
+userSchema.pre(/^find/, function(next) {
+    // this points to the current query
+    this.find({ active: { $ne: false } });
+    next();
+  });
+
+
+userSchema.methods.comparepasswords = async (currentpassword , password) =>{
+    console.log(currentpassword , password);
+    
+    const check = await bcrypt.compare(password,currentpassword)
+    
+    console.log(check);
+
+    return check
+
+}
+
 const User = mongoose.model('User', userSchema)
 
 
