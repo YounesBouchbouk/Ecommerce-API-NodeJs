@@ -4,6 +4,20 @@ class ApiFeature{
         this.qurystr = qurystr
     }
 
+
+    Search() {
+        const keyword = this.qurystr.keyword ? {
+            Title :{
+                $regex : this.qurystr.keyword,
+                $options : 'i'
+            }
+        } : {}
+
+        this.query = this.query.find({...keyword})
+
+        return this
+    }
+
     filter(){
         const excludeparams = ['page' , 'sort' , 'limite' , 'fields']
         const queryObj = {...this.qurystr}
@@ -67,6 +81,8 @@ class ApiFeature{
         return this
 
     }
+
+   
 
 }
 

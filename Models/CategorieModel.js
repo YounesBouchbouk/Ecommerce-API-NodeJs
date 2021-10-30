@@ -2,12 +2,25 @@ const mongoose = require('mongoose')
 
 const CategorieSchema = mongoose.Schema({
     Title : {
-        String : String
+        type : String
     },
     Description : String,
-    CreatedAt : Date.now()
+    CreatedAt : {
+        type : Date , 
+        default : Date.now()
+    },
+    products:  [{ type: mongoose.Types.ObjectId, ref: 'Product' }],
+
     
 })
+CategorieSchema.set('toObject', { virtuals: true })
+CategorieSchema.set('toJSON', { virtuals: true })
+
+CategorieSchema.virtual("Products Count").get(function(){
+        if(this.products) return this.products.length
+        return 0;
+    })
+
 
 const Categorie = mongoose.model('Categories'  ,CategorieSchema )
 

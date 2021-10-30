@@ -1,4 +1,4 @@
-const AppError = require('./../utils/appErreur')
+const AppError = require('./../utils/appError')
 
 const handlJsonwebtokenError = err =>  new AppErreur('Invalide web token please login', 401)
 

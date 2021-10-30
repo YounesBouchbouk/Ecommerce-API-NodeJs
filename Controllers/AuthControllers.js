@@ -6,13 +6,21 @@ const {promisify} = require('util');
 
 
 exports.private= CatchAsync(async (req,res,next) => {
+
+  // console.log(req.cookies.jwt);
+
   let token ; 
   // 1) check if there is a token in req.headers
-  if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-      token = req.headers.authorization.split(' ')[1]
-      // console.log(token);
-      
+  // if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
+  //     token = req.headers.authorization.split(' ')[1]
+  //     console.log(token);
+  // }
+
+  if(req.cookies && req.cookies.jwt) {
+    token = req.cookies.jwt
   }
+
+
   if(!token) {
       return next(new AppError("U must login befoure get access to this path" , 401))
   }
@@ -45,12 +53,13 @@ const createSendToken = (user, statusCode, res) => {
     };
     if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
   
-    res.cookie('jwt', token, cookieOptions);
+    
   
+
     // Remove password from output
     user.Password = undefined;
   
-    res.status(statusCode).json({
+    res.status(statusCode).cookie('jwt', token, cookieOptions).json({
       status: 'success',
       token,
       data: {

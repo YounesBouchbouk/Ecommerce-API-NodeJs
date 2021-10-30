@@ -20,7 +20,7 @@ const OrderShchema = mongoose.Schema({
         zipcode: {type: String, required: 'Zip Code is required'},
         country: {type: String, required: 'Country is required'}
       },
-      User : {
+    User : {
         
             type : mongoose.Schema.ObjectId,
             ref : "User"

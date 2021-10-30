@@ -30,16 +30,28 @@ const ProductSchema = mongoose.Schema({
     },
     Images : [String],
     updated: Date,
-    Categorie: [
+    Categories: 
+    [
         {
           type: mongoose.Schema.ObjectId,
-          ref: 'Categorie'
+          ref: 'Categories'
         }
-      ]
+    ] 
 
 
 
 }) 
+
+
+ProductSchema.pre(/^find/  , function(next)  {
+    console.log("Holz");
+    this.populate({
+        path : "Categories",
+        select:'_id Title'
+    })
+
+    next()
+})
 
 const Product = mongoose.model('Product', ProductSchema)
 
