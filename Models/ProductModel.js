@@ -36,11 +36,22 @@ const ProductSchema = mongoose.Schema({
           type: mongoose.Schema.ObjectId,
           ref: 'Categories'
         }
-    ] 
-
-
-
+    ]
+},{
+    toJSON : {virtuals : true},
+    toObject : {virtuals:true}
 }) 
+
+// ProductSchema.set('toObject', { virtuals: true })
+// ProductSchema.set('toJSON', { virtuals: true })
+
+// FIXME
+ProductSchema.virtual("reviews"  , {
+    ref : "Reviews",
+    foreignField : 'Product',
+    localField : '_id'
+})
+
 
 
 ProductSchema.pre(/^find/  , function(next)  {
@@ -52,6 +63,8 @@ ProductSchema.pre(/^find/  , function(next)  {
 
     next()
 })
+
+
 
 const Product = mongoose.model('Product', ProductSchema)
 

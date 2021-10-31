@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const userRouting = require('./Routes/userRoute')
 const productRouting = require('./Routes/ProductRoute')
 const categorieRouting = require('./Routes/CategorieRoute')
+const ReviewRouting = require('./Routes/ReviewRoute')
 const cookieparser = require('cookie-parser')
 const app = express()
 
@@ -13,5 +14,6 @@ app.use(cookieparser())
 app.use('/api/v1/user' , userRouting)
 app.use('/api/v1/' , productRouting)
 app.use('/api/v1/Categories',categorieRouting)
+app.use('/api/v1/Reviews',ReviewRouting)
 
 module.exports = app

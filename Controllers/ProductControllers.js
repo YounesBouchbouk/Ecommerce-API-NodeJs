@@ -18,7 +18,6 @@ exports.getProducts = CatchAsync( async (req,res,next) => {
 
     if(!result) return next(new AppError("No Product has Found" , 404))
     res.status(200).json({
-        status : 'Done ! ',
         result
     })
 })

@@ -8,20 +8,21 @@ const reviewschema = mongoose.Schema({
     },
     rating : {
         type : Number,
-        required : [true , "rating is require"]
+        required : [true , "rating is require"],
+        max : 5
 
     },
     CreatedAt : {
         type : Date,
-        default : Date.now
+        default : Date.now()
     } , 
     Product : {
-        type : mongoos.Schema.ObjectId,
+        type : mongoose.Schema.ObjectId,
         ref : "Product",
         required : [true , "Review must belong to a Product"]
     },
     user : {
-        type : mongoos.Schema.ObjectId,
+        type : mongoose.Schema.ObjectId,
         ref : "User",
         required : [true  , "review must belong to user"]
     }
@@ -30,4 +31,17 @@ const reviewschema = mongoose.Schema({
     toObject : {virtual:true}
 })
 
+reviewschema.pre(/^find/ , function(next){
+    this.populate({
+        path : "Product",
+        select:'_id Title'
+    }).populate({
+        path : "user",
+        select : '_id FullName'
+    })
+
+    next()
+})
+
 const Reviews = mongoose.model('Reviews', reviewschema)
+module.exports = Reviews
