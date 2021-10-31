@@ -16,7 +16,7 @@ const CategorieSchema = mongoose.Schema({
 CategorieSchema.set('toObject', { virtuals: true })
 CategorieSchema.set('toJSON', { virtuals: true })
 
-CategorieSchema.virtual("Products Count").get(function(){
+CategorieSchema.virtual("ProductsCount").get(function(){
         if(this.products) return this.products.length
         return 0;
     })
