@@ -4,6 +4,22 @@ const Product = require('./../Models/ProductModel')
 const ApiFeature = require('./../utils/apiGlobalFeature')
 const Category = require('./../Models/CategorieModel')
 
+
+
+exports.sendProductInReqFromId = CatchAsync( async (req,res,next) => {
+    let filter ={};
+    if(req.params.productID) filter={_id  : req.params.productID}
+
+    const Query = await  Product.findById(req.params.productID).populate('productreviews')
+    
+    if(!Query) return next(new AppError("No Product has Found" , 404))
+    req.product  = Query;
+
+    next()
+})
+
+
+
 exports.getProducts = CatchAsync( async (req,res,next) => {
   
     const featureApi = new ApiFeature(Product.find(),req.query)
@@ -26,17 +42,7 @@ exports.getProducts = CatchAsync( async (req,res,next) => {
     })
 })
 
-exports.sendProductInReqFromId = CatchAsync( async (req,res,next) => {
-    let filter ={};
-    if(req.params.productID) filter={_id  : req.params.productID}
 
-    const Query = await  Product.findById(req.params.productID).populate('productreviews')
-    
-    if(!Query) return next(new AppError("No Product has Found" , 404))
-    req.product  = Query;
-
-    next()
-})
 
 exports.getOne =  (req,res,next) => {
     const product = req.product ;
