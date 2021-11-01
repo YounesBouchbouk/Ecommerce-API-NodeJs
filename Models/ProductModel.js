@@ -37,16 +37,13 @@ const ProductSchema = mongoose.Schema({
           ref: 'Categories'
         }
     ]
-},{
-    toJSON : {virtuals : true},
-    toObject : {virtuals:true}
 }) 
 
-// ProductSchema.set('toObject', { virtuals: true })
-// ProductSchema.set('toJSON', { virtuals: true })
+ProductSchema.set('toObject', { virtuals: true })
+ProductSchema.set('toJSON', { virtuals: true })
 
 // FIXME
-ProductSchema.virtual("reviews"  , {
+ProductSchema.virtual("productreviews"  , {
     ref : "Reviews",
     foreignField : 'Product',
     localField : '_id'
@@ -54,15 +51,15 @@ ProductSchema.virtual("reviews"  , {
 
 
 
-ProductSchema.pre(/^find/  , function(next)  {
-    console.log("Holz");
-    this.populate({
-        path : "Categories",
-        select:'_id Title'
-    })
+// ProductSchema.pre(/^find/  , function(next)  {
+//     console.log("Holz");
+//     this.populate({
+//         path : "Categories",
+//         select:'_id Title'
+//     })
 
-    next()
-})
+//     next()
+// })
 
 
 

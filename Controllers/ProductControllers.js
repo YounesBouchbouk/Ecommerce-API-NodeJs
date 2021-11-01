@@ -12,9 +12,13 @@ exports.getProducts = CatchAsync( async (req,res,next) => {
                                                                     .sort()
                                                                     .limitefields()
                                                                     .paningtation()
-    
                                                                     
-    const result = await featureApi.query
+                                                                
+                                                                    
+    const result = await featureApi.query.populate({
+        path : "Categories",
+        select:'_id Title'
+    })
 
     if(!result) return next(new AppError("No Product has Found" , 404))
     res.status(200).json({
@@ -22,19 +26,41 @@ exports.getProducts = CatchAsync( async (req,res,next) => {
     })
 })
 
-exports.getOne = CatchAsync( async (req,res,next) => {
+exports.sendProductInReqFromId = CatchAsync( async (req,res,next) => {
     let filter ={};
     if(req.params.productID) filter={_id  : req.params.productID}
 
-    const Query = await  Product.findById(req.params.productID)
+    const Query = await  Product.findById(req.params.productID).populate('productreviews')
     
     if(!Query) return next(new AppError("No Product has Found" , 404))
-                                                 
-    res.status(200).json({
-        status : 'Done ! ',
-        Query
-    })
+    req.product  = Query;
+
+    next()
 })
+
+exports.getOne =  (req,res,next) => {
+    const product = req.product ;
+    res.status(200).json({
+        product
+    })
+    console.log(req.product);
+
+}
+
+
+exports.related = CatchAsync(async (req,res,next) => {
+    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+    const {Categories} = req.product
+    const newarr = Categories.map((itm) => String(itm))
+
+    // const records = await Product.find().where('Categories').in(newarr).exec();
+    const records = await Product.find({
+        'Categories' : { $in: newarr }  , _id: { $ne: req.product._id }
+    }).limit(limit).select('-Images').populate('Categories')
+
+    res.status(200).json({records})
+
+  })
 
 
 exports.AddProduct = CatchAsync(async (req,res,next) => {
@@ -109,3 +135,5 @@ exports.editeproduct = CatchAsync(async (req, res) =>  {
   
     return res.send(newProduct);
   })
+
+
