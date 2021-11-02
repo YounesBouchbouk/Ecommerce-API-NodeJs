@@ -143,3 +143,23 @@ exports.editeproduct = CatchAsync(async (req, res) =>  {
   })
 
 
+//send all products of a categorie passed in the link 
+
+exports.CategorieProducts = CatchAsync(async (req,res,next) => {
+
+    const query = await Category.find(req.params)
+
+    if(query.length == 0) return next(new AppError('Categorie Not Found' , 400))
+
+    const productsArray = query[0].products;
+
+    if(productsArray.length == 0 ) return next(new AppError('Categorie has no products Not Found' , 400))
+
+    const listeprodect = productsArray.map((item)=> String(item))
+
+    console.log(listeprodect);
+    
+    const product = await Product.find({_id : { $in : listeprodect} })
+
+    res.status(200).json(product);
+})

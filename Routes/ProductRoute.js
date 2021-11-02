@@ -2,11 +2,15 @@ const express = require('express')
 const AuthCont = require('./../Controllers/AuthControllers')
 const productsCnt = require('./../Controllers/ProductControllers')
 const reviewRoutes = require('./ReviewRoute')
-const routes = express.Router()
+const routes = express.Router({mergeParams:true})
 
 
 //switch  to reviews controllers 
 routes.use('/:productID/reviews', reviewRoutes)
+routes.route('/products/all').get(productsCnt.CategorieProducts)
+
+
+
 
 routes.route('/Products')
             .get(AuthCont.private,productsCnt.getProducts)
