@@ -1,37 +1,80 @@
 const mongoose = require('mongoose')
 
 const OrderShchema = mongoose.Schema({
-    
     CreatedAt : {
         type : Date,
         default : Date.now()
     },
     Status : {
-        String,
+        type :String,
         default: 'Not processed',
         enum: ['Not processed' , 'Processing', 'Shipped', 'Delivered', 'Cancelled']
     },
-    quantity: Number,
-    Prix_Total : Number,
     delivery_address: {
         street: {type: String, required: 'Street is required'},
         city: {type: String, required: 'City is required'},
         state: {type: String},
         zipcode: {type: String, required: 'Zip Code is required'},
-        country: {type: String, required: 'Country is required'}
+        country: {type: String, required: 'Country is required'},
+        phonenumber :{type : String , require : 'Phone number require'}
       },
-    User : {
+    User_Cust : {
         
             type : mongoose.Schema.ObjectId,
             ref : "User"
         
       },
-    Productes : [
+    OrderItems : [
         {
-            type : mongoose.Schema.ObjectId,
-            ref : "Product"
+            name : {
+                type : String,
+                require : true
+            },
+            quantité : {
+                type : Number,
+                require : true , 
+
+            },
+            price : {
+                type : Number,
+                require : true 
+            },
+            Product  : {
+                type :  mongoose.Schema.ObjectId,
+                ref : "Product"
+            }
         }
-    ]
+    ],
+    PayementInfo : {
+        id : {
+            type : String,
+            require : true, 
+        },
+        status : {
+            type : String   ,
+            require : true
+        }
+    },
+    totalPrice : Number,
+    TaxPrice : {
+        type : Number,
+        require : true 
+    },
+    ShippingPrice : {
+        type : Number , 
+        require : true
+    },
+    PaidAt : {
+        type : Date,
+        default : Date.now()
+    },
+    DeliveredAt : {
+        type : Date
+    }
+    
 })
 
-module.exports = mongoose.model('Orders', OrderShchema)
+const Order = mongoose.model('Orders'  ,OrderShchema )
+
+module.exports = Order
+

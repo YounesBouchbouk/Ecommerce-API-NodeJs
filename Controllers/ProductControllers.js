@@ -143,7 +143,6 @@ exports.editeproduct = CatchAsync(async (req, res) =>  {
   })
 
 
-//send all products of a categorie passed in the link 
 
 exports.CategorieProducts = CatchAsync(async (req,res,next) => {
 
@@ -155,11 +154,30 @@ exports.CategorieProducts = CatchAsync(async (req,res,next) => {
 
     if(productsArray.length == 0 ) return next(new AppError('Categorie has no products Not Found' , 400))
 
-    const listeprodect = productsArray.map((item)=> String(item))
+    const listeproduct = productsArray.map((item)=> String(item))
 
-    console.log(listeprodect);
+    console.log(listeproduct);
     
-    const product = await Product.find({_id : { $in : listeprodect} })
+    const product = await Product.find({_id : { $in : listeproduct} })
 
     res.status(200).json(product);
+})
+
+
+//increase and decrease  Prudects Quantity after creating order or changing the status
+
+
+exports.decreaseQuantity = CatchAsync(async (req,res,next) => {
+
+     req.body.OrderItems.map(async(item) => {
+       
+        await Product.updateOne({ "_id": item.Product } ,{"$inc": { "Quantite": -item.quantité} } )
+
+    })
+    next()
+
+})
+
+exports.incressQuantity = CatchAsync(async (req,res,next) => {
+    
 })
