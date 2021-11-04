@@ -162,3 +162,14 @@ exports.forgotPassword = CatchAsync(async (req, res, next) => {
     // 4) Log the user in, send JWT
     createSendToken(user, 200, res);
   });
+
+
+  exports.restrictTo = (...roles) => {
+    return (req,res,next) => {
+
+     if(!roles.includes(req.user.role)) return  next(new AppError("You are not allowed for this action " , 403))
+     next()
+    }
+
+
+}

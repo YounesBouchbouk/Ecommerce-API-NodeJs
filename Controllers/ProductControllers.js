@@ -179,7 +179,7 @@ exports.decreaseQuantity = CatchAsync(async (req,res,next) => {
 })
 
 
-exports.ifCancelledToIncresse = CatchAsync (async (req,res,next) => {
+exports.ifCancelledToIncrease = CatchAsync (async (req,res,next) => {
     if(req.params.Status === "Cancelled") {
         console.log("Bdite f incressment a3chirie");
         req.myOrder.OrderItems.map(async(item) => {

@@ -7,7 +7,7 @@ const routes = express.Router()
 
 routes.use('/:Title', ProductRoute)
 
-routes.route('/').post(AuthCont.private ,CategorieControl.AddCategorie  )
+routes.route('/').post(AuthCont.private ,AuthCont.restrictTo("admin"),CategorieControl.AddCategorie  )
                .get(AuthCont.private ,CategorieControl.GetAllCategories )
 
 

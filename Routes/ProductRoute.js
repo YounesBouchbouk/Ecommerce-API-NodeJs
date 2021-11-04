@@ -13,13 +13,13 @@ routes.route('/products/all').get(productsCnt.CategorieProducts)
 
 
 routes.route('/Products')
-            .get(AuthCont.private,productsCnt.getProducts)
-            .post(AuthCont.private,productsCnt.AddProduct)
+            .get(productsCnt.getProducts)
+            .post(AuthCont.private,AuthCont.restrictTo("admin"),productsCnt.AddProduct)
             
 routes.route('/Product/:productID') 
             .get(productsCnt.sendProductInReqFromId,productsCnt.getOne)
-            .delete(AuthCont.private , productsCnt.DeletePro)
-            .put(AuthCont.private,productsCnt.editeproduct)
+            .delete(AuthCont.private ,AuthCont.restrictTo("admin"), productsCnt.DeletePro)
+            .put(AuthCont.private,AuthCont.restrictTo("admin"),productsCnt.editeproduct)
 
 routes.route('/Product/:productID/related')
             .get(productsCnt.sendProductInReqFromId,productsCnt.related)
