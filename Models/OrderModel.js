@@ -7,8 +7,8 @@ const OrderShchema = mongoose.Schema({
     },
     Status : {
         type :String,
-        default: 'Not processed',
-        enum: ['Not processed' , 'Processing', 'Shipped', 'Delivered', 'Cancelled']
+        default: 'Processing',
+        enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled']
     },
     delivery_address: {
         street: {type: String, required: 'Street is required'},

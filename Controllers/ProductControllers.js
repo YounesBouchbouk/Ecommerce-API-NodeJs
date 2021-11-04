@@ -3,7 +3,7 @@ const AppError = require('./../utils/appError')
 const Product = require('./../Models/ProductModel')
 const ApiFeature = require('./../utils/apiGlobalFeature')
 const Category = require('./../Models/CategorieModel')
-
+ 
 
 
 exports.sendProductInReqFromId = CatchAsync( async (req,res,next) => {
@@ -178,6 +178,13 @@ exports.decreaseQuantity = CatchAsync(async (req,res,next) => {
 
 })
 
-exports.incressQuantity = CatchAsync(async (req,res,next) => {
-    
+
+exports.ifCancelledToIncresse = CatchAsync (async (req,res,next) => {
+    if(req.params.Status === "Cancelled") {
+        console.log("Bdite f incressment a3chirie");
+        req.myOrder.OrderItems.map(async(item) => {
+            await Product.updateOne({ "_id": item.Product } ,{"$inc": { "Quantite": item.quantité} } )
+        })
+    }
+    next()
 })
